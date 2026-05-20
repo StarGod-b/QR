@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Generate QR codes instantly for URLs, text, and contact info. Download as PNG. No data stored. Free to use." />
+    <title>QR Code Generator – Henry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- Animated Background Orbs -->
+    <div class="bg-orbs" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Particle Grid -->
+    <div class="grid-overlay" aria-hidden="true"></div>
+
+    <div class="app-wrapper">
+
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                    <rect x="6" y="6" width="1" height="1" />
+                    <rect x="17" y="6" width="1" height="1" />
+                    <rect x="17" y="17" width="1" height="1" />
+                    <rect x="6" y="17" width="1" height="1" />
+                </svg>
+            </div>
+            <h1 class="app-title">QR Code <span class="gradient-text">Generator</span></h1>
+            <p class="app-subtitle">Generate QR codes instantly for URLs, text &amp; contacts · Download as PNG · No
+                data stored</p>
+        </header>
+
+        <!-- Main Card -->
+        <main class="main-card">
+
+            <!-- Tab Navigation -->
+            <nav class="tab-nav" role="tablist" aria-label="QR Code type">
+                <button class="tab-btn active" role="tab" aria-selected="true" data-tab="url" id="tab-url"
+                    aria-controls="panel-url">
+                    <svg class="tab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                    </svg>
+                    URL
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" data-tab="text" id="tab-text"
+                    aria-controls="panel-text">
+                    <svg class="tab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                    Text
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" data-tab="contact" id="tab-contact"
+                    aria-controls="panel-contact">
+                    <svg class="tab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    Contact
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" data-tab="imgtext" id="tab-imgtext"
+                    aria-controls="panel-imgtext">
+                    <svg class="tab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" />
+                    </svg>
+                    Image + Text
+                </button>
+                <div class="tab-indicator" id="tabIndicator"></div>
+            </nav>
+
+            <div class="card-body">
+                <div class="content-grid">
+
+                    <!-- ─── LEFT: Input Section ─── -->
+                    <section class="input-section">
+
+                        <!-- URL Panel -->
+                        <div class="tab-panel active" id="panel-url" role="tabpanel" aria-labelledby="tab-url">
+                            <h2 class="panel-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                                </svg>
+                                Enter URL
+                            </h2>
+                            <div class="field-group">
+                                <label class="field-label" for="urlInput">Website URL</label>
+                                <div class="input-wrapper">
+                                    <span class="input-prefix">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <line x1="2" y1="12" x2="22" y2="12" />
+                                            <path
+                                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                                        </svg>
+                                    </span>
+                                    <input type="url" id="urlInput" class="field-input"
+                                        placeholder="example.com or https://example.com" autocomplete="url" />
+                                </div>
+                                <p class="field-hint">If you don't include https://, we'll add it automatically.</p>
+                            </div>
+                        </div>
+
+                        <!-- Text Panel -->
+                        <div class="tab-panel" id="panel-text" role="tabpanel" aria-labelledby="tab-text">
+                            <h2 class="panel-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                </svg>
+                                Enter Text
+                            </h2>
+                            <div class="field-group">
+                                <label class="field-label" for="textInput">Text Content</label>
+                                <textarea id="textInput" class="field-textarea"
+                                    placeholder="Enter any text to generate QR code..." rows="5"></textarea>
+                                <p class="field-hint char-counter"><span id="charCount">0</span> characters</p>
+                            </div>
+                        </div>
+
+                        <!-- Contact Panel -->
+                        <div class="tab-panel" id="panel-contact" role="tabpanel" aria-labelledby="tab-contact">
+                            <h2 class="panel-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg>
+                                Contact Information
+                            </h2>
+                            <div class="contact-fields">
+                                <div class="field-row-2">
+                                    <div class="field-group">
+                                        <label class="field-label" for="firstName">First Name</label>
+                                        <input type="text" id="firstName" class="field-input contact-field"
+                                            placeholder="Henry" autocomplete="given-name" />
+                                    </div>
+                                    <div class="field-group">
+                                        <label class="field-label" for="lastName">Last Name</label>
+                                        <input type="text" id="lastName" class="field-input contact-field"
+                                            placeholder="Nugraha" autocomplete="family-name" />
+                                    </div>
+                                </div>
+
+                                <div class="field-group">
+                                    <label class="field-label" for="phoneNumber">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.9a16 16 0 0 0 6.29 6.29l1.29-1.29a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                                        </svg>
+                                        Phone Number
+                                    </label>
+                                    <input type="tel" id="phoneNumber" class="field-input contact-field"
+                                        placeholder="+62 812 3456 7890" autocomplete="tel" />
+                                </div>
+
+                                <div class="field-group">
+                                    <label class="field-label" for="emailAddr">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                            <polyline points="22,6 12,13 2,6" />
+                                        </svg>
+                                        Email Address
+                                    </label>
+                                    <input type="email" id="emailAddr" class="field-input contact-field"
+                                        placeholder="henry@example.com" autocomplete="email" />
+                                </div>
+
+                                <div class="field-group">
+                                    <label class="field-label" for="orgName">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                                        </svg>
+                                        Organization
+                                    </label>
+                                    <input type="text" id="orgName" class="field-input contact-field"
+                                        placeholder="Company / Organization Name" autocomplete="organization" />
+                                </div>
+
+                                <div class="field-group">
+                                    <label class="field-label" for="jobTitle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                                        </svg>
+                                        Job Title
+                                    </label>
+                                    <input type="text" id="jobTitle" class="field-input contact-field"
+                                        placeholder="e.g. Software Engineer" autocomplete="organization-title" />
+                                </div>
+
+                                <div class="field-group" id="urlGroup1">
+                                    <label class="field-label" for="contactUrl1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <line x1="2" y1="12" x2="22" y2="12" />
+                                            <path
+                                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                                        </svg>
+                                        Website 1
+                                    </label>
+                                    <input type="url" id="contactUrl1" class="field-input contact-field url-input"
+                                        placeholder="https://example.com" autocomplete="url" />
+                                </div>
+
+                                <div class="field-group" id="urlGroup2" style="display: none; margin-top: 10px;">
+                                    <label class="field-label" for="contactUrl2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <line x1="2" y1="12" x2="22" y2="12" />
+                                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                                        </svg>
+                                        Website 2
+                                    </label>
+                                    <input type="url" id="contactUrl2" class="field-input contact-field url-input"
+                                        placeholder="https://example2.com" autocomplete="url" />
+                                </div>
+
+                                <div class="field-group" id="urlGroup3" style="display: none; margin-top: 10px;">
+                                    <label class="field-label" for="contactUrl3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <line x1="2" y1="12" x2="22" y2="12" />
+                                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                                        </svg>
+                                        Website 3
+                                    </label>
+                                    <input type="url" id="contactUrl3" class="field-input contact-field url-input"
+                                        placeholder="https://example3.com" autocomplete="url" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image + Text Panel -->
+                        <div class="tab-panel" id="panel-imgtext" role="tabpanel" aria-labelledby="tab-imgtext">
+                            <h2 class="panel-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                    <circle cx="8.5" cy="8.5" r="1.5" />
+                                    <polyline points="21 15 16 10 5 21" />
+                                </svg>
+                                Image + Text QR
+                            </h2>
+
+                            <!-- File Drop Zone -->
+                            <div class="field-group">
+                                <label class="field-label" for="imgFileInput">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                        <polyline points="17 8 12 3 7 8" />
+                                        <line x1="12" y1="3" x2="12" y2="15" />
+                                    </svg>
+                                    Upload Image
+                                </label>
+                                <div class="file-drop-zone" id="fileDropZone">
+                                    <input type="file" id="imgFileInput" accept="image/jpeg,image/png"
+                                        class="file-hidden-input" aria-label="Upload image file" />
+                                    <div class="file-drop-content" id="fileDropContent">
+                                        <div class="file-drop-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                                <polyline points="17 8 12 3 7 8" />
+                                                <line x1="12" y1="3" x2="12" y2="15" />
+                                            </svg>
+                                        </div>
+                                        <p class="file-drop-text">Drop image here or <span class="file-browse-link">browse</span></p>
+                                        <span class="file-drop-hint">JPG or PNG · Max 32 MB</span>
+                                    </div>
+                                    <div class="file-selected-info" id="fileSelectedInfo" style="display:none;">
+                                        <div class="file-thumb-wrap">
+                                            <img id="fileThumb" src="" alt="Selected image preview" class="file-thumb" />
+                                        </div>
+                                        <div class="file-selected-meta">
+                                            <span class="file-selected-name" id="fileSelectedName"></span>
+                                            <span class="file-selected-size" id="fileSelectedSize"></span>
+                                        </div>
+                                        <button class="file-remove-btn" id="fileRemoveBtn" type="button" aria-label="Remove selected image">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <line x1="18" y1="6" x2="6" y2="18" />
+                                                <line x1="6" y1="6" x2="18" y2="18" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="field-hint">The image will be uploaded to ImgBB. The hosted URL will be embedded in the QR code along with your message.</p>
+                            </div>
+
+                            <!-- Message Textarea -->
+                            <div class="field-group" style="margin-top: 18px;">
+                                <label class="field-label" for="imgTextMessage">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                    </svg>
+                                    Message
+                                </label>
+                                <textarea id="imgTextMessage" class="field-textarea"
+                                    placeholder="Enter a caption, description, or message..." rows="3"></textarea>
+                                <p class="field-hint char-counter"><span id="imgTextCharCount">0</span> characters</p>
+                            </div>
+
+                            <!-- Generate Button -->
+                            <button class="btn-generate-imgtext" id="btnGenImgText" type="button">
+                                <svg class="btn-gen-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                                </svg>
+                                <span id="btnGenImgTextLabel">Generate QR Code</span>
+                            </button>
+
+                            <!-- Status Message -->
+                            <div class="imgtext-status" id="imgtextStatus" style="display:none;">
+                                <div class="imgtext-status-inner" id="imgtextStatusInner"></div>
+                            </div>
+                        </div>
+
+                        <!-- Clear Button -->
+                        <button class="btn-clear" id="btnClear" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="1 4 1 10 7 10" />
+                                <path d="M3.51 15a9 9 0 1 0 .49-3.54" />
+                            </svg>
+                            Clear All Fields
+                        </button>
+                    </section>
+
+                    <!-- ─── RIGHT: QR Preview Section ─── -->
+                    <section class="preview-section">
+                        <h2 class="panel-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7" />
+                                <rect x="14" y="3" width="7" height="7" />
+                                <rect x="14" y="14" width="7" height="7" />
+                                <rect x="3" y="14" width="7" height="7" />
+                                <rect x="6" y="6" width="1" height="1" />
+                                <rect x="17" y="6" width="1" height="1" />
+                                <rect x="17" y="17" width="1" height="1" />
+                                <rect x="6" y="17" width="1" height="1" />
+                            </svg>
+                            Generated QR Code
+                        </h2>
+
+                        <!-- QR Display Box -->
+                        <div class="qr-box" id="qrBox">
+                            <!-- Empty State -->
+                            <div class="qr-empty" id="qrEmpty">
+                                <div class="qr-empty-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect x="3" y="3" width="7" height="7" />
+                                        <rect x="14" y="3" width="7" height="7" />
+                                        <rect x="14" y="14" width="7" height="7" />
+                                        <rect x="3" y="14" width="7" height="7" />
+                                        <rect x="6" y="6" width="1" height="1" />
+                                        <rect x="17" y="6" width="1" height="1" />
+                                        <rect x="17" y="17" width="1" height="1" />
+                                        <rect x="6" y="17" width="1" height="1" />
+                                    </svg>
+                                </div>
+                                <p class="qr-empty-text">Fill in the form to generate your QR code</p>
+                                <span class="qr-empty-hint">Supports URL, Text &amp; vCard Contact</span>
+                            </div>
+
+                            <!-- QR Canvas Container -->
+                            <div class="qr-canvas-wrap" id="qrCanvasWrap" style="display:none;">
+                                <div class="qr-frame" id="qrContainer"></div>
+                                <p class="qr-scan-hint">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M3 9V6a2 2 0 0 1 2-2h2" />
+                                        <path d="M21 9V6a2 2 0 0 0-2-2h-2" />
+                                        <path d="M3 15v3a2 2 0 0 0 2 2h2" />
+                                        <path d="M21 15v3a2 2 0 0 0-2 2h-2" />
+                                        <line x1="7" y1="12" x2="17" y2="12" />
+                                    </svg>
+                                    Scan with your phone camera
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-buttons" id="actionButtons" style="display:none;">
+                            <button class="btn-download" id="btnDownload" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="7 10 12 15 17 10" />
+                                    <line x1="12" y1="15" x2="12" y2="3" />
+                                </svg>
+                                Download PNG
+                            </button>
+                            <button class="btn-copy" id="btnCopy" type="button">
+                                <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                </svg>
+                                <svg class="check-icon" style="display:none;" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                                <span id="copyLabel">Copy Data</span>
+                            </button>
+                        </div>
+
+                        <!-- QR Data Preview -->
+                        <div class="qr-data-preview" id="qrDataPreview" style="display:none;">
+                            <div class="qr-data-header">
+                                <span class="qr-data-label">QR Code Data</span>
+                                <span class="qr-data-badge" id="qrDataType">URL</span>
+                            </div>
+                            <pre class="qr-data-content" id="qrDataContent"></pre>
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Generate QR codes instantly &nbsp;·&nbsp; No data stored &nbsp;·&nbsp; Free to use &nbsp;·&nbsp; Export
+                as PNG</p>
+        </footer>
+
+    </div>
+
+    <!-- QRious Library (loaded once) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
